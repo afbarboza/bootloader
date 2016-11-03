@@ -19,8 +19,23 @@ void print(const char *string)
 	return;
 }
 
+char read(void)
+{
+	char letter;
+	__asm__ __volatile__
+	(
+		"movb	$0x0, %%ah;\t\n"
+		"int	$0x16;\t\n"
+		"movb	$0x0E, %%ah;\t\n"
+		"int	$0x10;\t\n"
+		: "=a"(letter)
+	);
+	return letter;
+}
+
 __attribute__((noreturn)) void main_kernel(void)
 {
 	print("Hello World.");
+	read();
 	while(1);
 }
